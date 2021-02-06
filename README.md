@@ -18,7 +18,7 @@ To easily set up your own environment with these packages installes you can eith
 
 If all packages are installed and the repo is cloned, navigate to the folder containing `simple.py`. To do a short test run, enter something like:
 ```python
-python simple.py --file "file-tsp.txt: --pop_size 25 --generations 100 --cores 1
+python simple.py --file "file-tsp.txt" --pop_size 25 --generations 100 --cores 1
 ```
 
 The full set of command line arguments is:
