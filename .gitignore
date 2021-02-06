@@ -130,3 +130,7 @@ dmypy.json
 
 # Ignore .tsp files
 /tsp/*.tsp
+
+# Ignore output
+output_log.txt
+last_best_backup.txt
