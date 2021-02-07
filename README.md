@@ -16,9 +16,9 @@ To easily set up your own environment with these packages installes you can eith
 
 # Instructions
 
-If all packages are installed and the repo is cloned, navigate to the folder containing `simple.py`. To do a short test run, enter something like:
+If all packages are installed and the repo is cloned, navigate to the folder containing `main.py`. To do a short test run, enter something like:
 ```python
-python simple.py --file "file-tsp.txt" --pop_size 25 --generations 100 --cores 1
+python main.py --file "file-tsp.txt" --pop_size 25 --generations 100 --cores 1
 ```
 
 The full set of command line arguments is:
@@ -27,3 +27,4 @@ The full set of command line arguments is:
 * `--generations` controls for how many generations the algorithm should run. Default: `10000`
 * `--mutation_rate` controls the mutation rate for each child. Default: `0.005`
 * `--cores` controls how many cores the program is allowed to use. Inputting a value of `-1` will make the program use as many cores as are available. Default: `-1`
+* `--memetic` controls whether the algorithm runs a 2-opt local search to improve convergence. Default: `False`

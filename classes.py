@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import itertools
 import numpy as np
 from numpy.random import default_rng
 from tqdm import tqdm
@@ -24,8 +25,11 @@ class Individual:
             raise ValueError("argument 'tour' must either be a list or 'random' must be set to a value > 0.")
         else:
             self.tour = tour
+        self.fitness_score=None
         
     def fitness(self): #Calculate total distance for own tour
+        if self.fitness_score is not None:
+            return self.fitness_score
         tour_dist = 0
         for pair in pairwise(self.tour):
             if pair in self.dists_table:
@@ -34,7 +38,8 @@ class Individual:
                 tour_dist += self.dists_table[pair[::-1]]
             else:
                 raise NameError("Invalid city in tour.")
-        return tour_dist
+        self.fitness_score = tour_dist
+        return self.fitness_score
         
     def mutate(self):
         mutated_tour = self.tour.copy()
@@ -67,15 +72,32 @@ class Individual:
         offspring_1 = Individual(self.dists_table, tour = new_tour_1)
         offspring_2 = Individual(self.dists_table, tour = new_tour_2)
         return offspring_1, offspring_2
+    
+    def local_search(self):
+        # Assume self to be best
+        best_score = self.fitness()
+        best_ind = self
+        
+        # Check local neighbours using 2-opt, return best neighbour
+        for i in itertools.combinations(range(len(self.tour))):
+            candidate_tour = self.tour.copy()
+            candidate_tour[i[0]], candidate_tour[i[1]] = candidate_tour[i[1]], candidate_tour[i[0]]
+            candidate = Individual(self.dists_table, tour=candidate_tour)
+            if candidate.fitness() > best_score:
+                best_score = candidate.fitness()
+                best_ind = candidate
+                
+        return best_ind
             
 class Generation:
-    def __init__(self, dists_table, nr_of_cities, inds=None, random=0, mutation_rate=0.005, cores=-1):
+    def __init__(self, dists_table, nr_of_cities, inds=None, random=0, mutation_rate=0.005, cores=-1, local_search=False):
         # When setting random to a value higher than 0, that is how many individuals will be in the generation.
         self.dists_table = dists_table
         self.nr_of_cities = nr_of_cities
         self.mutation_rate = mutation_rate
         self.fitness_list = []
         self.cores = cores
+        self.local_search = local_search
         
         if random>0:
             self.inds = [Individual(dists_table, random=self.nr_of_cities) for i in range(random)]
@@ -102,6 +124,7 @@ class Generation:
                 candidate_2 = tourney[3]
                 
             offspring = candidate_1.crossover(candidate_2)
+            
             # Check for mutation in children
             rng = default_rng()
             mutate_1 = rng.random()
@@ -110,6 +133,10 @@ class Generation:
                 offspring[0].mutate()
             if mutate_2 < self.mutation_rate:
                 offspring[1].mutate()
+                
+            # Apply local search if running memetic
+            if self.local_search:
+                return offspring[0].local_search(), offspring[1].local_search()
             
             return offspring
         
@@ -120,7 +147,7 @@ class Generation:
         # Flatten list of pairs
         new_generation = [i for sublist in sibling_list for i in sublist]
         
-        return Generation(self.dists_table, self.nr_of_cities, inds=new_generation, mutation_rate=self.mutation_rate, cores=self.cores)
+        return Generation(self.dists_table, self.nr_of_cities, inds=new_generation, mutation_rate=self.mutation_rate, cores=self.cores, local_search=self.local_search)
     
     def get_best(self):
         if not self.fitness_list:
