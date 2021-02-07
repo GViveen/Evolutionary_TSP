@@ -15,7 +15,8 @@ parser.add_argument('--pop_size', dest='pop_size', default=100, type=int, help="
 parser.add_argument('--generations', dest='nr_gens', default=10000, type=int, help="How many generations are to be simulated.")
 parser.add_argument('--mutation_rate', dest='mutation_rate', default=0.005, type=float, help="Set how often mutations occur between generations.")
 parser.add_argument('--cores', dest='cores', default=-1, type=int, help="How many cores is the kernel allowed to use. Default: -1, which indicates that as many cores as possible will be used.")
-parser.add_argument('--memetic', dest='memetic', default=False, type=bool, help="When True, the algorithm will use 2-opt local search to aid in convergence.")
+parser.add_argument('--memetic', dest='memetic', action='store_true', help="When True, the algorithm will use 2-opt local search to aid in convergence.")
+parser.set_defaults(memetic=False)
 
 args = parser.parse_args()
 

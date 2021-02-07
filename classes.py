@@ -79,11 +79,11 @@ class Individual:
         best_ind = self
         
         # Check local neighbours using 2-opt, return best neighbour
-        for i in itertools.combinations(range(len(self.tour))):
+        for i in itertools.combinations(range(len(self.tour)), 2):
             candidate_tour = self.tour.copy()
             candidate_tour[i[0]], candidate_tour[i[1]] = candidate_tour[i[1]], candidate_tour[i[0]]
             candidate = Individual(self.dists_table, tour=candidate_tour)
-            if candidate.fitness() > best_score:
+            if candidate.fitness() < best_score:
                 best_score = candidate.fitness()
                 best_ind = candidate
                 
