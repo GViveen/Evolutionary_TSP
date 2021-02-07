@@ -50,7 +50,7 @@ with tqdm(range(args.nr_gens), desc="Full Evolutionary Run", leave=True) as bar:
         if new_gen.get_best()[0] < best_score:
             best_tour = new_gen.get_best()[1].tour
             best_score = new_gen.get_best()[0]
-            with open("results/best_backup"+args.output, "w") as backup:
+            with open("results/best_backup_"+args.output, "w") as backup:
                 backup.write("{}".format(best_tour))
         current_gen = new_gen
     

@@ -132,4 +132,4 @@ dmypy.json
 /tsp/*.tsp
 
 # Ignore output
-/results/*.txt
+/results/*
