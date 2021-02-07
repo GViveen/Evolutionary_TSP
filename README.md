@@ -11,7 +11,7 @@ You'll need Python 3.x to be able to run this project. Additionally, the project
 * matplotlib
 
 All of the above packages are available via the pip installer. Apart from tsplib95, they are also available via the conda package manager. 
-To easily set up your own environment with these packages installes you can either use pip to run `pip install -r requirements.txt` or to use conda with `conda install -r requirements.txt`. Note that if you use the conda installation you will still need to use pip to install tsplib95 if you want to use this project along with any input files from TSPLib.
+To easily set up your own environment with these packages installed you can either use pip to run `pip install -r requirements.txt` or to use conda with `conda install -r requirements.txt`. Note that if you use the conda installation you will still need to use pip to install tsplib95 if you want to use this project along with any input files from TSPLib.
 
 # Instructions
 
