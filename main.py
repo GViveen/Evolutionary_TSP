@@ -37,6 +37,8 @@ log_entry = "{}, {}, {}".format(current_gen.get_best()[0], current_gen.get_worst
 with open("output_log.txt", "w") as output:
     output.write("Best Fitness Score, Worst Fitness Score, Average Fitness")
     output.write("\n"+log_entry)
+best_score = current_gen.get_best()[0]
+best_tour = current_gen.get_best()[1].tour
 
 with tqdm(range(args.nr_gens), desc="Full Evolutionary Run", leave=True) as bar:
     for i in bar:
@@ -44,8 +46,11 @@ with tqdm(range(args.nr_gens), desc="Full Evolutionary Run", leave=True) as bar:
         log_entry = "{}, {}, {}".format(new_gen.get_best()[0], new_gen.get_worst()[0], new_gen.get_average_fitness())
         with open("output_log.txt", "a") as output:
             output.write("\n"+log_entry)
-        with open("last_best_backup.txt", "w") as backup:
-            backup.write("{}".format(new_gen.get_best()[1].tour))
+        if new_gen.get_best()[0] < best_score:
+            best_tour = new_gen.get_best()[1].tour
+            best_score = new_gen.get_best()[0]
+            with open("last_best_backup.txt", "w") as backup:
+                backup.write("{}".format(best_tour))
         current_gen = new_gen
     
 results = np.loadtxt("output_log.txt", skiprows=1, delimiter=", ")
