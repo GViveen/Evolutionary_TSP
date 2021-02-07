@@ -34,7 +34,7 @@ else:
 current_gen = Generation(city_dists, nr_of_cities, random=args.pop_size, local_search=args.memetic)
 
 log_entry = "{}, {}, {}".format(current_gen.get_best()[0], current_gen.get_worst()[0], current_gen.get_average_fitness())
-with open("output_log.txt", "w") as output:
+with open("results/output_log.txt", "w") as output:
     output.write("Best Fitness Score, Worst Fitness Score, Average Fitness")
     output.write("\n"+log_entry)
 best_score = current_gen.get_best()[0]
@@ -44,16 +44,16 @@ with tqdm(range(args.nr_gens), desc="Full Evolutionary Run", leave=True) as bar:
     for i in bar:
         new_gen = current_gen.next_gen()
         log_entry = "{}, {}, {}".format(new_gen.get_best()[0], new_gen.get_worst()[0], new_gen.get_average_fitness())
-        with open("output_log.txt", "a") as output:
+        with open("results/output_log.txt", "a") as output:
             output.write("\n"+log_entry)
         if new_gen.get_best()[0] < best_score:
             best_tour = new_gen.get_best()[1].tour
             best_score = new_gen.get_best()[0]
-            with open("last_best_backup.txt", "w") as backup:
+            with open("results/last_best_backup.txt", "w") as backup:
                 backup.write("{}".format(best_tour))
         current_gen = new_gen
     
-results = np.loadtxt("output_log.txt", skiprows=1, delimiter=", ")
+results = np.loadtxt("results/output_log.txt", skiprows=1, delimiter=", ")
 
 best, = plt.plot(results[:, 0], 'c-.', label="Best")
 worst, = plt.plot(results[:, 1], 'r-.', label="Worst")

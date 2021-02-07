@@ -132,5 +132,4 @@ dmypy.json
 /tsp/*.tsp
 
 # Ignore output
-output_log.txt
-last_best_backup.txt
+/results/*.txt
