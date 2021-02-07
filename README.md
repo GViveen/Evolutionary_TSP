@@ -30,4 +30,5 @@ The full set of command line arguments is:
 * `--pop_size` controls how many individuals are present in each generation. Default: `100`
 * `--generations` controls for how many generations the algorithm should run. Default: `10000`
 * `--mutation_rate` controls the mutation rate for each child. Default: `0.005`
+* `--output` allows the user to set an output file. Default: `"output_log.txt"`
 * `--memetic` controls whether the algorithm runs a 2-opt local search to improve convergence. Default: `False`
