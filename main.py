@@ -14,6 +14,7 @@ parser.add_argument('--file', dest='filename', default='file-tsp.txt', help="Sho
 parser.add_argument('--pop_size', dest='pop_size', default=100, type=int, help="How large the population should be.")
 parser.add_argument('--generations', dest='nr_gens', default=10000, type=int, help="How many generations are to be simulated.")
 parser.add_argument('--mutation_rate', dest='mutation_rate', default=0.005, type=float, help="Set how often mutations occur between generations.")
+parser.add_argument('--output', dest='output', default='output_log.txt', help="Set the file to write the output to.")
 parser.add_argument('--memetic', dest='memetic', action='store_true', help="When True, the algorithm will use 2-opt local search to aid in convergence.")
 parser.set_defaults(memetic=False)
 
@@ -34,7 +35,7 @@ else:
 current_gen = Generation(city_dists, nr_of_cities, random=args.pop_size, local_search=args.memetic)
 
 log_entry = "{}, {}, {}".format(current_gen.get_best()[0], current_gen.get_worst()[0], current_gen.get_average_fitness())
-with open("results/output_log.txt", "w") as output:
+with open("results/"+args.output, "w") as output:
     output.write("Best Fitness Score, Worst Fitness Score, Average Fitness")
     output.write("\n"+log_entry)
 best_score = current_gen.get_best()[0]
@@ -44,16 +45,16 @@ with tqdm(range(args.nr_gens), desc="Full Evolutionary Run", leave=True) as bar:
     for i in bar:
         new_gen = current_gen.next_gen()
         log_entry = "{}, {}, {}".format(new_gen.get_best()[0], new_gen.get_worst()[0], new_gen.get_average_fitness())
-        with open("results/output_log.txt", "a") as output:
+        with open("results/"+args.output, "a") as output:
             output.write("\n"+log_entry)
         if new_gen.get_best()[0] < best_score:
             best_tour = new_gen.get_best()[1].tour
             best_score = new_gen.get_best()[0]
-            with open("results/last_best_backup.txt", "w") as backup:
+            with open("results/best_backup"+args.output, "w") as backup:
                 backup.write("{}".format(best_tour))
         current_gen = new_gen
     
-results = np.loadtxt("results/output_log.txt", skiprows=1, delimiter=", ")
+results = np.loadtxt("results/"+args.output, skiprows=1, delimiter=", ")
 
 best, = plt.plot(results[:, 0], 'c-.', label="Best")
 worst, = plt.plot(results[:, 1], 'r-.', label="Worst")
