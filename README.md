@@ -16,9 +16,14 @@ To easily set up your own environment with these packages installes you can eith
 
 # Instructions
 
-If all packages are installed and the repo is cloned, navigate to the folder containing `main.py`. To do a short test run, enter something like:
+If all packages are installed and the repo is cloned, navigate to the folder containing `main.py`. To do a short test run, enter something similar to:
 ```python
 python main.py --file "file-tsp.txt" --pop_size 25 --generations 100 --cores 1
+```
+
+To do a test run with a memetic algorithm, run something similar to:
+```python
+python main.py --file "file-tsp.txt" --pop_size 25 --generations 100 --cores 1 --memetic
 ```
 
 The full set of command line arguments is:
