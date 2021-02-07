@@ -3,9 +3,7 @@
 import itertools
 import numpy as np
 from numpy.random import default_rng
-from tqdm import tqdm
-from joblib import Parallel, delayed
-from utils import pairwise, rotate, tqdm_joblib
+from utils import pairwise, rotate
 
 class City:
     def __init__(self, x, y):
@@ -90,13 +88,12 @@ class Individual:
         return best_ind
             
 class Generation:
-    def __init__(self, dists_table, nr_of_cities, inds=None, random=0, mutation_rate=0.005, cores=-1, local_search=False):
+    def __init__(self, dists_table, nr_of_cities, inds=None, random=0, mutation_rate=0.005, local_search=False):
         # When setting random to a value higher than 0, that is how many individuals will be in the generation.
         self.dists_table = dists_table
         self.nr_of_cities = nr_of_cities
         self.mutation_rate = mutation_rate
         self.fitness_list = []
-        self.cores = cores
         self.local_search = local_search
         
         if random>0:
@@ -110,7 +107,7 @@ class Generation:
         rng = default_rng()
         tournaments = [np.array(self.inds)[rng.choice(len(self.inds), size=4, replace=False)] for i in range(int(len(self.inds)/2))]
         
-        # Prepare parallel computation
+        # Prepare computation
         def reproduce(tourney):
             # Find best in first binary tourney
             if tourney[0].fitness() < tourney[1].fitness():
@@ -140,14 +137,13 @@ class Generation:
             
             return offspring
         
-        # Perform parallel computation
-        with tqdm_joblib(tqdm(desc="reproduction cycle", total=int(len(self.inds)/2), leave=False)) as progress_bar:
-            sibling_list = Parallel(n_jobs=self.cores)(delayed(reproduce)(i) for i in tournaments)
+        # Perform computation
+        sibling_list = [reproduce(i) for i in tournaments]
         
         # Flatten list of pairs
         new_generation = [i for sublist in sibling_list for i in sublist]
         
-        return Generation(self.dists_table, self.nr_of_cities, inds=new_generation, mutation_rate=self.mutation_rate, cores=self.cores, local_search=self.local_search)
+        return Generation(self.dists_table, self.nr_of_cities, inds=new_generation, mutation_rate=self.mutation_rate, local_search=self.local_search)
     
     def get_best(self):
         if not self.fitness_list:

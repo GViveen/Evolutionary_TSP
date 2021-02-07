@@ -14,7 +14,6 @@ parser.add_argument('--file', dest='filename', default='file-tsp.txt', help="Sho
 parser.add_argument('--pop_size', dest='pop_size', default=100, type=int, help="How large the population should be.")
 parser.add_argument('--generations', dest='nr_gens', default=10000, type=int, help="How many generations are to be simulated.")
 parser.add_argument('--mutation_rate', dest='mutation_rate', default=0.005, type=float, help="Set how often mutations occur between generations.")
-parser.add_argument('--cores', dest='cores', default=-1, type=int, help="How many cores is the kernel allowed to use. Default: -1, which indicates that as many cores as possible will be used.")
 parser.add_argument('--memetic', dest='memetic', action='store_true', help="When True, the algorithm will use 2-opt local search to aid in convergence.")
 parser.set_defaults(memetic=False)
 
@@ -32,7 +31,7 @@ else:
     
 # Random initialization:
 
-current_gen = Generation(city_dists, nr_of_cities, random=args.pop_size, cores=args.cores, local_search=args.memetic)
+current_gen = Generation(city_dists, nr_of_cities, random=args.pop_size, local_search=args.memetic)
 
 log_entry = "{}, {}, {}".format(current_gen.get_best()[0], current_gen.get_worst()[0], current_gen.get_average_fitness())
 with open("output_log.txt", "w") as output:

@@ -6,7 +6,6 @@ This repository contains a Python implementation of a simple evolutionary algori
 
 You'll need Python 3.x to be able to run this project. Additionally, the project relies on a number of additional packages:
 * numpy
-* joblib
 * tqdm
 * tsplib95
 * matplotlib
@@ -18,12 +17,12 @@ To easily set up your own environment with these packages installes you can eith
 
 If all packages are installed and the repo is cloned, navigate to the folder containing `main.py`. To do a short test run, enter something similar to:
 ```python
-python main.py --file "file-tsp.txt" --pop_size 25 --generations 100 --cores 1
+python main.py --file "file-tsp.txt" --pop_size 25 --generations 100
 ```
 
 To do a test run with a memetic algorithm, run something similar to:
 ```python
-python main.py --file "file-tsp.txt" --pop_size 25 --generations 100 --cores 1 --memetic
+python main.py --file "file-tsp.txt" --pop_size 25 --generations 100 --memetic
 ```
 
 The full set of command line arguments is:
@@ -31,5 +30,4 @@ The full set of command line arguments is:
 * `--pop_size` controls how many individuals are present in each generation. Default: `100`
 * `--generations` controls for how many generations the algorithm should run. Default: `10000`
 * `--mutation_rate` controls the mutation rate for each child. Default: `0.005`
-* `--cores` controls how many cores the program is allowed to use. Inputting a value of `-1` will make the program use as many cores as are available. Default: `-1`
 * `--memetic` controls whether the algorithm runs a 2-opt local search to improve convergence. Default: `False`
